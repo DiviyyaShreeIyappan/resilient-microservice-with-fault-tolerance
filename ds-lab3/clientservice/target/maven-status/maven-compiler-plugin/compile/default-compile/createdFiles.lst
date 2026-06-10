@@ -1,0 +1,3 @@
+com\example\client\controller\ClientController.class
+com\example\client\service\BackendClient.class
+com\example\client\ClientServiceApplication.class

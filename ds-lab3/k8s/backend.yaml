@@ -1,0 +1,38 @@
+# Reference : https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backendservice
+  template:
+    metadata:
+      labels:
+        app: backendservice
+    spec:
+      containers:
+        - name: backendservice
+          image: backendservice:lab3       
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+           - name: SPRING_PROFILES_ACTIVE
+             value: "chaos-monkey"
+
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backendservice
+spec:
+  type: ClusterIP                          
+  selector:
+    app: backendservice
+  ports:
+    - port: 8080
+      targetPort: 8080

@@ -1,0 +1,27 @@
+services:
+  backendservice:
+    build:
+      context: .
+      dockerfile: backendservice/Dockerfile
+    container_name: backendservice
+    ports:
+      - "8081:8080"
+    networks:
+      - labnet
+
+  clientservice:
+    build:
+      context: .
+      dockerfile: clientservice/Dockerfile
+    container_name: clientservice
+    depends_on:
+      - backendservice
+    ports:
+      - "8080:8080"
+    networks:
+      - labnet
+
+networks:
+  labnet:
+    driver: bridge
+

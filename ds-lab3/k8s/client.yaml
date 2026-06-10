@@ -1,0 +1,37 @@
+# Reference : https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: clientservice
+  template:
+    metadata:
+      labels:
+        app: clientservice
+    spec:
+      containers:
+        - name: clientservice
+          image: clientservice:lab3       
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: BACKEND_URL
+              value: "http://backendservice:8080/api/message"
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clientservice
+spec:
+  type: ClusterIP
+  selector:
+    app: clientservice
+  ports:
+    - port: 8080
+      targetPort: 8080
